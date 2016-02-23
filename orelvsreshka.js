@@ -14,28 +14,24 @@ var rl = readline.createInterface({
 
 console.log("Угадай число 1 или 2?");
 console.log("Для выхода из игры нажмите 0");
-var number=0;
+var number = 0;
 
 rl.on('line', function (cmd) {
-    number = (Math.floor(Math.random() * (2 - 1 + 1)) + 1);
-    if (cmd == 1 || cmd == 2) {
-        fs.open(argv._[0],'a+',0777, function(err, file_handle) {
-            if (err) throw err;
-            if (number == cmd) {
-                console.log('Поздравляю вы угадали ');
-                fs.write(file_handle, '+\n', null, 'ascii', function(err) {
-                    if (err) throw err;
-                });
-            } else {
-                console.log("К сожалению вы не угадали");
-                fs.write(file_handle, '-\n', null, 'ascii', function(err) {
-                    if (err) throw err;
-                });
-            }
-
-        });
+    number = Math.ceil(Math.random() * 2);
+    if (parseInt(cmd) === 1 || parseInt(cmd) === 2) {
+        if (number === parseInt(cmd)) {
+            console.log('Поздравляю вы угадали ');
+            fs.appendFile(argv._[0], '+\n', null, 'ascii', function (err) {
+                if (err) throw err;
+            });
+        } else {
+            console.log("К сожалению вы не угадали");
+            fs.appendFile(argv._[0], '-\n', null, 'ascii', function (err) {
+                if (err) throw err;
+            });
+        }
     } else {
-        if (cmd == 0) {
+        if (parseInt(cmd) === 0) {
             rl.close();
         } else {
             console.log("Неверное значение.");
