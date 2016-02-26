@@ -13,41 +13,35 @@ fs.readFile(argv._[0], function (err, data) {
     var lines = text.split('\n');
     var i = 0;
     var j = 0;
-    var tmp_count_plus = 0;
-    var tmp_count_minus = 0;
-    var count_minus = 0;
-    var count_plus = 0;
-
-    var results = {};
-    console.log("Количество сыграных партий " + (lines.length - 1));
     lines.forEach(function (line) {
-
         if (line != "") {
             if (line == "+") {
                 i++;
-                count_plus++;
             } else {
-                if (count_plus >= tmp_count_plus)
-                    tmp_count_plus = count_plus;
-                count_plus = 0;
-            }
-            if (line == "-") {
                 j++;
-                count_minus++;
-            }
-            else {
-                if (count_minus >= tmp_count_minus)
-                    tmp_count_minus = count_minus;
-                count_minus = 0;
             }
         }
-
-
     });
+    console.log("Количество сыграных партий " + (lines.length - 1));
     console.log("Выиграно партий " + i);
     console.log("Проиграно партий " + j);
     console.log(Math.ceil((i * 100) / (lines.length - 1)) + "% / " + (100 - Math.ceil((i * 100) / (lines.length - 1))) + "%");
-    console.log("Наибольшее количестов выигрешей подряд " + tmp_count_plus);
-    console.log("Наибольшее количестов проигрышей подряд " + tmp_count_minus);
+    console.log("Наибольшее количестов выигрешей подряд " + countMaxLength("+", lines));
+    console.log("Наибольшее количестов проигрышей подряд " + countMaxLength("-", lines));
 });
+
+function countMaxLength(str, arr) {
+    var count = 0;
+    var tmp_count = 0;
+    arr.forEach(function (line) {
+        if (line == str) {
+            count++;
+        } else {
+            if (count >= tmp_count)
+                tmp_count = count;
+            count = 0;
+        }
+    });
+    return tmp_count;
+}
 
