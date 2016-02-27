@@ -6,9 +6,15 @@ var rl = readline.createInterface({
     input: process.stdin, // ввод из стандартного потока
     output: process.stdout // вывод в стандартный поток
 });
-var GameOver = 0;
 var dealer = {value: 0}, you = {value: 0};
+var deck = [];
 
+function in_array(value, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] == value) return true;
+    }
+    return false;
+}
 function Shuffle(max) {
     num = Math.random() * max;
     return Math.round(num) + 1;
@@ -58,48 +64,45 @@ function CardValue(card, who) {
 function DrawCard(who) {
     card = Shuffle(12);
     suit = GetSuit();
-
-    if (who == "You") {
-        console.log(CardName(card) + " " + suit);
+    if (in_array(CardName(card) + " " + suit, deck)) {
+        DrawCard(who);
     }
-    else {
-        console.log(CardName(card) + " " + suit);
-    }
+    deck.push(CardName(card) + " " + suit);
+    console.log(CardName(card) + " " + suit);
     return CardValue(card, who);
 }
 
 function NewGame() {
-
+    dealer.value = 0;
+    you.value = 0;
+    deck = [];
     console.log("Игра началась!\n");
     console.log("Карта сдающего");
-    dealer.value = (eval(dealer.value)) + DrawCard("Dealer");
+    dealer.value = dealer.value + DrawCard("Dealer");
     console.log("\nВаши карты");
-    you.value = (eval(you.value)) + DrawCard("You") + DrawCard("You");
+    you.value = you.value + DrawCard("You") + DrawCard("You");
     console.log("\nОчков у сдающего: " + dealer.value);
     console.log("Ваши очки: " + you.value + "\n");
     secondMenu();
-    GameOver = -1;
 }
 
 function Dealer() {
     console.log("\nСдающий тянет карты: ");
     while (dealer.value < 17) {
-        dealer.value = eval(dealer.value) + DrawCard("Dealer");
+        dealer.value = dealer.value + DrawCard("Dealer");
         console.log("\nОчков у сдающего: " + dealer.value);
     }
 }
 
-
 function Player() {
     console.log("Ваша карта");
-    you.value = eval(you.value) + DrawCard("You");
+    you.value = you.value + DrawCard("You");
     console.log("Итого очков: " + you.value);
     if (you.value < 21) {
         secondMenu();
     }
     if (you.value > 21) {
         console.log("Вы проиграли!");
-        GameOver = 0;
         menu();
     }
 }
@@ -107,19 +110,15 @@ function Player() {
 function Declare() {
     if (dealer.value > 21) {
         console.log("Вы выиграли!");
-        GameOver = 0;
     }
     else if (you.value > dealer.value) {
         console.log("Вы выиграли!");
-        GameOver = 0;
     }
     else if (dealer.value == you.value) {
         console.log("Вы проиграли");
-        GameOver = 0;
     }
     else {
         console.log("Вы проиграли");
-        GameOver = 0;
     }
     menu();
 }
