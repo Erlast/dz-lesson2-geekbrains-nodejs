@@ -19,7 +19,6 @@ function Shuffle(max) {
     num = Math.random() * max;
     return Math.round(num) + 1;
 }
-
 function GetSuit() {
     suit = Shuffle(4);
 
@@ -34,7 +33,6 @@ function GetSuit() {
             return "Червей";
     }
 }
-
 function CardName(card) {
     switch (card) {
         case 1  :
@@ -49,7 +47,6 @@ function CardName(card) {
             return card;
     }
 }
-
 function CardValue(card, who) {
     if (card == 1) {
         if (who == "You" && you.value > 10) {
@@ -60,7 +57,6 @@ function CardValue(card, who) {
     if (card > 10) return 10;
     return card;
 }
-
 function DrawCard(who) {
     card = Shuffle(12);
     suit = GetSuit();
@@ -71,7 +67,6 @@ function DrawCard(who) {
     console.log(CardName(card) + " " + suit);
     return CardValue(card, who);
 }
-
 function NewGame() {
     dealer.value = 0;
     you.value = 0;
@@ -85,7 +80,6 @@ function NewGame() {
     console.log("Ваши очки: " + you.value + "\n");
     secondMenu();
 }
-
 function Dealer() {
     console.log("\nСдающий тянет карты: ");
     while (dealer.value < 17) {
@@ -93,7 +87,6 @@ function Dealer() {
         console.log("\nОчков у сдающего: " + dealer.value);
     }
 }
-
 function Player() {
     console.log("Ваша карта");
     you.value = you.value + DrawCard("You");
@@ -106,7 +99,6 @@ function Player() {
         menu();
     }
 }
-
 function Declare() {
     if (dealer.value > 21) {
         console.log("Вы выиграли!");
@@ -122,7 +114,6 @@ function Declare() {
     }
     menu();
 }
-
 function menu() {
     rl.question('1. Новая игра\n2. Выход\n', function (answer) {
         switch (answer) {
@@ -137,7 +128,6 @@ function menu() {
         }
     });
 }
-
 function secondMenu() {
     rl.question('1.Тянуть карту\n2.Мне хватит\n3.Выход\n', function (answer) {
         switch (answer) {
